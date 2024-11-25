@@ -1,0 +1,118 @@
+prompts:
+  simple:
+    version: "1.0"
+    description: |
+      A baseline, straightforward prompt asking the model to determine the sentiment.
+    template: |
+      Your goal is to say whether a given review expresses a positive or negative sentiment towards the movie. 
+      <sentiment>sentiment</sentiment>
+    model_settings:
+      temperature: 0.0
+      top_p: 0.95
+      top_k: 40
+      max_tokens: 10
+
+  roleplay:
+    version: "1.0"
+    description: |
+      A prompt that includes role of a film critic.
+    template: |
+      You are an experienced film critic. Your goal is to say whether a given review expresses a positive or negative sentiment towards the movie. 
+      Format your response as follows:
+      <sentiment>sentiment</sentiment>
+    model_settings:
+      temperature: 0.0
+      top_p: 0.95
+      top_k: 40
+      max_tokens: 10
+
+  chain_of_thought:
+    version: "1.0"
+    description: |
+      A concise prompt that instructs the model to answer with "Positive" or "Negative" only.
+    template: |
+      You are a sentiment analysis assistant. Determine whether the sentiment of a movie review is positive or negative. To decide, follow these steps:
+
+      1. Identify key phrases that reflect opinions or emotions in the review.
+      2. Determine whether these phrases are positive or negative in tone.
+      3. Count the positive and negative sentiments to decide the overall polarity.
+      4. Conclude whether the review is positive or negative.
+    model_settings:
+      temperature: 0.0
+      top_p: 0.95
+      top_k: 40
+      max_tokens: 300
+
+  few_shot_cot:
+    version: "1.0"
+    description: |
+      A prompt that includes a few-shot learning example + chain of thought.
+    template: |
+      You are a sentiment analysis assistant. Determine whether the sentiment of a movie review is positive or negative. To decide, follow these steps:
+
+      1. Identify key phrases that reflect opinions or emotions in the review.
+      2. Determine whether these phrases are positive or negative in tone.
+      3. Count the positive and negative sentiments to decide the overall polarity.
+      4. Conclude whether the review is positive or negative.
+
+      Example 1:
+      Review: "The movie was absolutely fantastic. The acting was brilliant, and the story was captivating."
+      Step 1: Key phrases: "absolutely fantastic," "acting was brilliant," "story was captivating."
+      Step 2: All phrases are positive.
+      Step 3: Positive count = 3, Negative count = 0.
+      Step 4: Overall sentiment: Positive.
+
+      Example 2:
+      Review: "The plot was dull, and the characters were uninteresting."
+      Step 1: Key phrases: "plot was dull," "characters were uninteresting."
+      Step 2: All phrases are negative.
+      Step 3: Positive count = 0, Negative count = 2.
+      Step 4: Overall sentiment: Negative.
+
+      Now analyze the review:
+      Step 1: Key phrases:
+      Step 2: Positive or negative tone for each:
+      Step 3: Positive count = X, Negative count = Y.
+      Step 4: Overall sentiment: [Positive/Negative].
+    model_settings:
+      temperature: 0.0
+      top_p: 0.95
+      top_k: 40
+      max_tokens: 300
+
+  self_consistence:
+    version: "1.0"
+    description: |
+      A prompt that includes a few-shot learning example + chain of thought + self-consistence approach.
+    template: |
+      You are a sentiment analysis assistant. Determine whether the sentiment of a movie review is positive or negative. To decide, follow these steps:
+
+      1. Identify key phrases that reflect opinions or emotions in the review.
+      2. Determine whether these phrases are positive or negative in tone.
+      3. Count the positive and negative sentiments to decide the overall polarity.
+      4. Conclude whether the review is positive or negative.
+
+      Example 1:
+      Review: "The movie was absolutely fantastic. The acting was brilliant, and the story was captivating."
+      Step 1: Key phrases: "absolutely fantastic," "acting was brilliant," "story was captivating."
+      Step 2: All phrases are positive.
+      Step 3: Positive count = 3, Negative count = 0.
+      Step 4: Overall sentiment: Positive.
+
+      Example 2:
+      Review: "The plot was dull, and the characters were uninteresting."
+      Step 1: Key phrases: "plot was dull," "characters were uninteresting."
+      Step 2: All phrases are negative.
+      Step 3: Positive count = 0, Negative count = 2.
+      Step 4: Overall sentiment: Negative.
+
+      Now analyze the review:
+      Step 1: Key phrases:
+      Step 2: Positive or negative tone for each:
+      Step 3: Positive count = X, Negative count = Y.
+      Step 4: Overall sentiment: [Positive/Negative].
+    model_settings:
+      temperature: 0.7
+      top_p: 0.95
+      top_k: 40
+      max_tokens: 300
