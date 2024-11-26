@@ -31,13 +31,25 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Prepare the Dataset
+### 4. Download the Models
+Download the models from the Hugging Face model hub and save them in the models/ directory.
+- **Download the 1.5B model**
+```bash
+curl -L -o ./models/Qwen2.5-1.5B-Instruct-Q5_K_M.gguf https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q5_K_M.gguf
+```
+
+- **Download the 0.5B model**
+```bash
+curl -L -o ./models/Qwen2.5-0.5B-Instruct-Q5_K_M.gguf https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/Qwen2.5-0.5B-Instruct-Q5_K_M.gguf
+```
+
+### 5. Prepare the Dataset
 This will generate a balanced subset of 500 movie reviews in data/subset.csv.
 ```bash
 python src/dataset.py
 ```
 
-### 5. Run the Sentiment Analysis Pipeline
+### 6. Run the Sentiment Analysis Pipeline
 This script will perform inference, evaluate performance, and generate visualizations. Results will be saved in the results/ directory. Original subset size is 500 reviews, but can be changed with the `--subset_size` argument.
 
 ```bash
