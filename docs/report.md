@@ -283,7 +283,7 @@ Conclusions:
 
 ### Visualization
 
-![Metrics Comparison](results/perfomance_plots/metrics.png)
+![Metrics Comparison](../results/performance_plots/metrics.png)
 
 *Figure 1: Metrics of both models with defferent prompt engineering approaches.*
 
