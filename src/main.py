@@ -79,7 +79,7 @@ def main(args, logger):
         logger.info("Step 2: Setting up the models")
         models = {}
         for model_path in args.model_paths:
-            model_name = os.path.basename(model_path).split('-')[0]  # Example naming
+            model_name = os.path.basename(model_path).split('-')[0]
             models[model_name] = initialize_model(model_path)
 
         logger.info("Step 3: Loading prompts")

@@ -2,7 +2,6 @@ import tempfile
 from unittest.mock import patch
 
 import pandas as pd
-import pytest
 from datasets import Dataset
 
 from src.dataset import load_and_prepare_dataset
@@ -32,14 +31,3 @@ def test_load_and_prepare_dataset(mock_load_dataset):
         assert (
             df_subset["label"].value_counts()[1] == 500
         ), "Should have 500 samples with label 1"
-
-
-def test_load_and_prepare_dataset_with_odd_subset_size():
-    with pytest.raises(ValueError, match="Subset size must be even"):
-        load_and_prepare_dataset(
-            dataset_name="ajaykarthick/imdb-movie-reviews",
-            subset_size=1000,
-            output_path="unused.csv",
-            split="test",
-            random_state=42,
-        )
