@@ -27,7 +27,7 @@ prompts:
   chain_of_thought:
     version: "2.0"
     description: |
-      A concise prompt that instructs the model to answer with "Positive" or "Negative" only.
+      A concise prompt that includes previous ideas, but also instructs the model to use chain of thoughts prompting technique before giving a final answer with "Positive" or "Negative" sentiment only.
     template: |
       You are a sentiment analysis assistant. Determine whether the sentiment of a movie review is 'Positive' or 'Negative'. To decide, follow these steps:
 
