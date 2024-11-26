@@ -9,7 +9,7 @@ from datasets import load_dataset
 def load_and_prepare_dataset(
     dataset_name: str = "ajaykarthick/imdb-movie-reviews",
     subset_size: int = 500,
-    output_path: str = "../data/imdb_movie_reviews_subset.csv",
+    output_path: str = "./data/imdb_movie_reviews_subset.csv",
     split: str = "test",
     random_state: int = 42,
 ) -> pd.DataFrame:

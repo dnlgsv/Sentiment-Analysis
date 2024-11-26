@@ -55,3 +55,7 @@ This script will perform inference, evaluate performance, and generate visualiza
 ```bash
 python src/main.py --subset_size 10
 ```
+If ModuleNotFoundError appears, as tmp solution, run:
+```bash
+export PYTHONPATH=. 
+```

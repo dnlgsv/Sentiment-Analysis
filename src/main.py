@@ -20,7 +20,7 @@ def parse_arguments():
     parser.add_argument(
         "--output_path",
         type=str,
-        default="../data/subset.csv",
+        default="./data/subset.csv",
         help="Path to save/load the subset dataset."
     )
     parser.add_argument(
@@ -79,9 +79,9 @@ def main(args, logger):
         logger.info("Step 2: Setting up the models")
         models = {}
         for model_path in args.model_paths:
-            model_name = os.path.basename(model_path).split('-')[0]
+            model_name = os.path.basename(model_path).split('-Instruct')[0]
             models[model_name] = initialize_model(model_path)
-
+        logger.info(f"Models loaded: {list(models.keys())}")
         logger.info("Step 3: Loading prompts")
         prompts = load_prompts(args.prompts_path)
 
