@@ -26,7 +26,7 @@ def main():
     try:
         logger.info("Step 1: Preparing the dataset")
         df_subset = load_and_prepare_dataset(
-            output_path="../data/subset.csv", subset_size=10
+            output_path="../data/subset.csv", subset_size=500
         )
 
         logger.info("Step 2: Setting up the models")
