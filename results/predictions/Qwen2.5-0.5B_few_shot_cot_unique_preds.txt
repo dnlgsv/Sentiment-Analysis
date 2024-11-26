@@ -1,0 +1,4 @@
+Unique Predictions: ['3 out of 10' '3/10' 'Abysmal' 'Boring' 'Disappointed' 'Fascinating'
+ 'Negative' 'Neutral' 'Poor' 'Positive' 'Very Negative' 'Very, very bad'
+ 'WORSE']
+Unique Predictions Count: 13

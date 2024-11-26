@@ -1,0 +1,16 @@
+Review: I bought this film on DVD so I could get an episode of Mystery Science Theater 3000. Thankfully, Mike, Crow, and Tom Servo are watchable, because the film itself is not. Although there is a plot, a story one can follow, and a few actors that can act, there isn't anything else. The movie was so boring, I have firmly confirmed that I will never watch it again without Tom, Crow and Mike. As summarized above, however, it was better than the film featured in the MST3K episode that preceded it; Mitchell.
+Pred   Sentiment: Boring
+Actual Sentiment: Negative
+--------------------------------------------------
+Review: This film is a cash in. A cash in reliant on a rousing theme tune created for an earlier classic. Yul Brynner has long since jumped ship and so have most of the production values. Lee Van Cleef takes over the lead role of Chris. I can't think of any actor who looks less like Brynner than Van Cleef. Hey, he could have at least shaved off his hair and lost the moustache, just for the sake of continuity. Some correctional centres show this movie in order to punish offenders. One step out of line and The Magnificent Seven Ride! is brought to the fore and wielded. They didn't even bother trying to make this movie not look like a TV movie! Abysmal.
+Pred   Sentiment: Abysmal
+Actual Sentiment: Negative
+--------------------------------------------------
+Review: I bought this film on DVD so I could get an episode of Mystery Science Theater 3000. Thankfully, Mike, Crow, and Tom Servo are watchable, because the film itself is not. Although there is a plot, a story one can follow, and a few actors that can act, there isn't anything else. The movie was so boring, I have firmly confirmed that I will never watch it again without Tom, Crow and Mike. As summarized above, however, it was better than the film featured in the MST3K episode that preceded it; Mitchell.
+Pred   Sentiment: Boring
+Actual Sentiment: Negative
+--------------------------------------------------
+Review: This is really a terrible film by any of the regular yardsticks. Plot, storyline, acting, effects, direction - I could go on. Suffice to say it's poor. However, it has a certain appeal. Many totally out of context sex scenes appear, it's fun looking for the Batman references. Umm - that's it. Poor really, don't bother.
+Pred   Sentiment: Poor
+Actual Sentiment: Negative
+--------------------------------------------------
