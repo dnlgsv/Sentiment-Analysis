@@ -375,6 +375,10 @@ This study highlights the potential of small language models for practical appli
    - **1.** Use more diverse examples to cover a wider range of sentiments.
    - **2.** Include examples with varying levels of complexity to test the model's adaptability.
    - **3.** Use similarity search to identify relevant examples for a given review.
+- **Encoding Models**: Usage SLM encoding models to create embeddings for reviews and train logreg to predict sentiment.
+- **Automate the prompt engineering process**:
+   - **DSPy or analogues**
+- **AI Agents**: Integrate the models into AI agents for real-time sentiment analysis in conversational interfaces.
 ---
 
 ## 11. References
