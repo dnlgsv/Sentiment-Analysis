@@ -14,7 +14,7 @@ The task involves implementing local inference, prompt engineering, evaluating m
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/dnlgsv/Sentiment-Analysis.git
 cd sentiment_analysis
 ```
 
