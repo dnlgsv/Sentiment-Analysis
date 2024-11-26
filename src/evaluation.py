@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def evaluate_predictions(
     y_true: List[str],
     y_pred: List[str],
-    pos_label: str = "positive",
+    pos_label: str = "Positive",
     return_confusion_matrix: bool = True,
 ) -> Dict[str, float]:
     """
@@ -31,11 +31,19 @@ def evaluate_predictions(
         Dict[str, float]: A dictionary of evaluation metrics.
     """
     try:
+        label_map = {1: "Negative", 0: "Positive"}
+        y_true = [label_map[label] for label in y_true]
         acc = accuracy_score(y_true, y_pred)
-        prec = precision_score(y_true, y_pred,  pos_label=pos_label, zero_division=0, average='binary')
-        rec = recall_score(y_true, y_pred, pos_label=pos_label, zero_division=0, average='binary')
-        f1 = f1_score(y_true, y_pred, pos_label=pos_label, zero_division=0, average='binary')
-        cm = confusion_matrix(y_true, y_pred, labels=["positive", "negative"])
+        prec = precision_score(
+            y_true, y_pred, pos_label=pos_label, zero_division=0, average="binary"
+        )
+        rec = recall_score(
+            y_true, y_pred, pos_label=pos_label, zero_division=0, average="binary"
+        )
+        f1 = f1_score(
+            y_true, y_pred, pos_label=pos_label, zero_division=0, average="binary"
+        )
+        cm = confusion_matrix(y_true, y_pred, labels=["Positive", "Negative"])
 
         metrics = {"Accuracy": acc, "Precision": prec, "Recall": rec, "F1-Score": f1}
 

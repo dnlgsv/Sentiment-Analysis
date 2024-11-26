@@ -199,7 +199,6 @@ def main():
         top_k=args.top_k,
     )
     logger.info(f"Sentiment: {sentiment}")
-    print(f"Sentiment: {sentiment}")
 
 
 if __name__ == "__main__":
