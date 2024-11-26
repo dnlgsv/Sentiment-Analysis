@@ -236,7 +236,7 @@ Chain of Thought prompt with few-shot examples is the most effective prompt for 
 - **F1 Score**: Harmonic mean of precision and recall, providing a balance between the two.
 - **Confusion Matrix**: To visualize the performance and identify any biases toward a particular class.
 
-Depends on the data and audience, the metrics can be adjusted. For example, if the data is imbalanced, F1 score is a better metric than accuracy. If the data is balanced, accuracy is a good metric and very easy to understand for techenical and non-techenical audience. 
+Depends on the data and audience, the metrics can be adjusted. For example, if the data is imbalanced, F1 score is a better metric than accuracy. If the data is balanced, accuracy is a good metric and very easy to understand for techenical and non-techenical audience.
 In this case, the data is balanced and accuracy is a good metric to use.
 
 ### Calculation Methods

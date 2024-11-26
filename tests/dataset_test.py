@@ -1,8 +1,10 @@
-import pytest
-import pandas as pd
-from unittest.mock import patch
-from datasets import Dataset
 import tempfile
+from unittest.mock import patch
+
+import pandas as pd
+import pytest
+from datasets import Dataset
+
 from src.dataset import load_and_prepare_dataset
 
 

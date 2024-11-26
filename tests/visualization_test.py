@@ -1,7 +1,9 @@
-import pandas as pd
-import numpy as np
 import os
-from src.visualization import plot_metrics, plot_confusion_matrix
+
+import numpy as np
+import pandas as pd
+
+from src.visualization import plot_confusion_matrix, plot_metrics
 
 
 def test_plot_metrics(tmp_path):

@@ -1,7 +1,7 @@
-import os
-import logging
 import argparse
-from typing import Optional
+import logging
+import os
+
 import pandas as pd
 from datasets import load_dataset
 

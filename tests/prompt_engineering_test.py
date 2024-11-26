@@ -1,8 +1,10 @@
 import os
+from typing import Any, Dict
+
 from src.prompt_engineering import load_prompts
 
 
-def test_load_prompts():
+def load_prompts_test(prompt_file: str) -> Dict[str, Dict[str, Any]]:
     """
     Test the load_prompts function to ensure it parses the prompts.yml file correctly.
     """

@@ -1,9 +1,9 @@
-import os
-import logging
 import argparse
+import logging
 from typing import Dict
-from llama_cpp import Llama
+
 import torch
+from llama_cpp import Llama
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

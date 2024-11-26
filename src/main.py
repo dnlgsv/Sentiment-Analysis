@@ -6,14 +6,16 @@ model inference, prompt engineering, evaluation, and visualization.
 """
 
 import logging
-import pandas as pd
-import numpy as np
 import os
+
+import numpy as np
+import pandas as pd
+
 from src.dataset import load_and_prepare_dataset
-from src.inference import initialize_model, SentimentModel
-from src.prompt_engineering import load_prompts
 from src.evaluation import evaluate_predictions
-from src.visualization import plot_metrics, plot_confusion_matrix
+from src.inference import initialize_model
+from src.prompt_engineering import load_prompts
+from src.visualization import plot_confusion_matrix, plot_metrics
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -51,10 +53,7 @@ def main():
                 predictions = []
                 for _, row in df_subset.iterrows():
                     system_prompt = prompt_config["template"]
-                    prompt = f"Here is the movie review to analyze:<review>{row["review"]}</review>"
-
-                    # print(f"System Prompt: {system_prompt}")
-                    # print(f"Prompt: {prompt}")
+                    prompt = f"""Here is the movie review to analyze:<review>{row["review"]}</review>"""
 
                     sentiment = model.classify_sentiment(
                         system_prompt=system_prompt,
@@ -64,7 +63,8 @@ def main():
                         top_p=prompt_config["top_p"],
                         top_k=prompt_config["top_k"],
                     )
-                    # Despite instructions, models can return strange answers, so I will save the predictions in a file for further analysis.
+                    # Despite instructions, models can return strange answers,
+                    # so I will save the predictions in a file for further analysis.
                     os.makedirs("./results/predictions", exist_ok=True)
                     if sentiment not in ("Positive", "Negative"):
                         with open(
@@ -81,7 +81,8 @@ def main():
                     predictions.append(sentiment)
 
                 # Collect results
-                # TODO: If the model predicts a label other than "Positive" or "Negative", we will keep Negative label. Makes sense to add Unknown label or something similar.
+                # TODO: If the model predicts a label other than "Positive" or "Negative",
+                # we will keep Negative label. Makes sense to add Unknown label or something similar.
                 unique_predictions = np.unique(predictions)
                 with open(
                     f"./results/predictions/{model_name}_{prompt_name}_unique_preds.txt",
