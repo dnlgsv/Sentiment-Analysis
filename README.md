@@ -15,7 +15,7 @@ The task involves implementing local inference, prompt engineering, evaluating m
 
 ```bash
 git clone https://github.com/dnlgsv/Sentiment-Analysis.git
-cd sentiment_analysis
+cd Sentiment-Analysis
 ```
 
 ### 2. Create a Virtual Environment
