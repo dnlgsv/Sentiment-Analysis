@@ -19,14 +19,14 @@ cd sentiment_analysis
 ```
 
 ### 2. Create a Virtual Environment
-    
+By default Python 3.12.7 was used.
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 ### 3. Install Dependencies
-    
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -43,4 +43,3 @@ This script will perform inference, evaluate performance, and generate visualiza
 ```bash
 python src/main.py
 ```
-

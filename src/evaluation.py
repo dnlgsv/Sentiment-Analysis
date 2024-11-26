@@ -1,12 +1,7 @@
 import logging
-from typing import List, Dict
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    confusion_matrix,
-)
+from typing import Dict, List
+
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,7 +26,7 @@ def evaluate_predictions(
         Dict[str, float]: A dictionary of evaluation metrics.
     """
     try:
-        label_map = {1: "Negative", 0: "Positive"}
+        label_map: Dict[int, str] = {1: "Negative", 0: "Positive"}
         y_true = [label_map[label] for label in y_true]
         acc = accuracy_score(y_true, y_pred)
         prec = precision_score(

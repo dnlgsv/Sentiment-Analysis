@@ -1,7 +1,9 @@
-import os
 import logging
-import pandas as pd
+import os
+from typing import List
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 from sklearn.metrics import ConfusionMatrixDisplay
 
@@ -11,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def plot_metrics(
     metrics_df: pd.DataFrame, save_path: str = "./results/metrics_plot.png"
-):
+) -> None:
     """
     Plots evaluation metrics for different models and prompts, with bars sorted within each metric.
 
@@ -101,8 +103,8 @@ def plot_metrics(
 
 
 def plot_confusion_matrix(
-    cm: list, model: str, prompt: str, save_path: str = "../results/"
-):
+    cm: List[List[int]], model: str, prompt: str, save_path: str = "../results/"
+) -> None:
     """
     Plots and saves the confusion matrix.
 
@@ -117,7 +119,7 @@ def plot_confusion_matrix(
         disp = ConfusionMatrixDisplay(
             confusion_matrix=cm, display_labels=["Positive", "Negative"]
         )
-        disp.plot(cmap=plt.cm.Blues)
+        disp.plot(cmap=plt.cm.Blues)  # type: ignore[attr-defined]
         plt.title(f"Confusion Matrix for {model} with {prompt} Prompt")
         plt.savefig(save_path)
         plt.close()

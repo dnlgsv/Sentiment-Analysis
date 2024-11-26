@@ -1,12 +1,13 @@
 import logging
-from typing import Dict
+from typing import Any, Dict
+
 import yaml
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def load_prompts(prompt_file: str) -> Dict[str, str]:
+def load_prompts(prompt_file: str) -> Dict[str, Dict[str, Any]]:
     """
     Loads prompt templates from a YAML file.
 

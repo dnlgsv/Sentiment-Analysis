@@ -5,7 +5,7 @@ prompts:
       A baseline, straightforward prompt asking the model to determine the sentiment.
     template: |
       Your goal is to say whether a given review expresses a <sentiment>Positive</sentiment> or <sentiment>Negative</sentiment> sentiment towards the movie. Only return the sentiment in the format: <sentiment>Positive</sentiment> or <sentiment>Negative</sentiment>. No additional text is allowed.
-      
+
     model_settings:
       temperature: 0.0
       top_p: 0.95
