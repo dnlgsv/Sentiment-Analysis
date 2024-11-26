@@ -79,10 +79,34 @@ The dataset **ajaykarthick/imdb-movie-reviews** contains 50,000 entries, which i
 - **Dataset subset creation**: 250 positive and 250 negative reviews were randomly sampled from the original dataset and saved to data directory.
 
 ### Exploratory Data Analysis (EDA)
+Full EDA analysis was performed on the test dataset and can be found in the [EDA notebook](../notebooks/EDA.ipynb). The following key insights were derived:
+- **1. Balanced Dataset**: The subset contains almost equal number of positive and negative reviews, so we don't need to worry about class imbalance.
+- **2. No Missing Values**: There are no missing values in the dataset.
+- **3. Few Duplicates**: Only 16 duplicates were found in the dataset, which will not significantly affect any metrics.
+- **4. Review Length Distribution**: The distribution of review lengths is similar for positive and negative reviews, so we don't need to worry about it while splitting.
+- **5. Word Frequency**: The most common words in positive and negative reviews are similar, but there are some unique words in each category, so it is possible to use encoding models to create embeddings for them and train a simple logreg model to predict sentiment - it can be a good baseline model.
+- **6. HTML Tags**: Some reviews contain HTML tags, which need to be removed before training models.
 
-- **Review Length Distribution**: Analyzed the distribution of review lengths to understand text complexity.
-- **Sentiment Distribution**: Confirmed the balanced distribution of positive and negative reviews in the subset.
-- **Word Frequency**: Identified the most common words in positive vs. negative reviews to detect any prominent patterns.
+![Review length by sentiment](../results/eda/review_length_by_sentiment.png)
+
+*Figure 1. Distribution of review lengths by sentiment.*
+
+![The most common words in negative reviews](../results/eda/most_common_words_in_negative_reviews.png)
+
+*Figure 2. The most common words in negative reviews.*
+
+![The most common words in positive reviews](../results/eda/most_common_words_in_positive_reviews.png)
+
+*Figure 3. The most common words in positive reviews.*
+
+![Wordcloud for positive tokens](../results/eda/wordcloud_for_negative_tokens.png)
+
+*Figure 4. Wordcloud for positive tokens.*
+
+![Wordcloud for positive tokens](../results/eda/wordcloud_for_positive_tokens.png)
+
+*Figure 5. Wordcloud for positive tokens.*
+
 
 ---
 
@@ -281,11 +305,11 @@ Conclusions:
 - The 1.5B model shows steady improvement in accuracy after prompt engineering. It is more robust to prompt changes and maintains a high level of accuracy.
 - Prompt engineering is crucial for improving the performance of smaller models, but the impact is more pronounced for less capable models.
 
-### Visualization
+### Visualization of Results
 
 ![Metrics Comparison](../results/performance_plots/metrics.png)
 
-*Figure 1: Metrics of both models with defferent prompt engineering approaches.*
+*Figure 6. Metrics of both models with defferent prompt engineering approaches.*
 
 ## 7. Analysis of Results
 
@@ -355,10 +379,10 @@ This study highlights the potential of small language models for practical appli
 
 ## 11. References
 
-- **Ajay Karthick**. (n.d.). *IMDB Movie Reviews Dataset*. Retrieved from [Hugging Face Datasets](https://huggingface.co/datasets/ajaykarthick/imdb-movie-reviews)
-- **Bartosz Staszewski**. (n.d.). *Qwen2.5 Models*. Retrieved from [Hugging Face Models](https://huggingface.co/bartowski)
-- **Scikit-learn Metrics**. (n.d.). Retrieved from [Scikit-learn Documentation](https://scikit-learn.org/stable/modules/model_evaluation.html)
-- **Llama CPP Python**. (n.d.). Retrieved from [GitHub Repository](https://github.com/abetlen/llama-cpp-python)
+- **Ajay Karthick**: *IMDB Movie Reviews Dataset*. Retrieved from [Hugging Face Datasets](https://huggingface.co/datasets/ajaykarthick/imdb-movie-reviews)
+- **Bartosz Staszewski**: *Qwen2.5 Models*. Retrieved from [Hugging Face Models](https://huggingface.co/bartowski)
+- **Scikit-learn Metrics**: Retrieved from [Scikit-learn Documentation](https://scikit-learn.org/stable/modules/model_evaluation.html)
+- **Llama CPP Python**: Retrieved from [GitHub Repository](https://github.com/abetlen/llama-cpp-python)
 
 ---
 

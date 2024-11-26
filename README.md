@@ -32,14 +32,14 @@ pip install -r requirements.txt
 ```
 
 ### 4. Prepare the Dataset
-This will generate a balanced subset of 1,000 movie reviews in data/subset.csv.
+This will generate a balanced subset of 500 movie reviews in data/subset.csv.
 ```bash
 python src/dataset.py
 ```
 
 ### 5. Run the Sentiment Analysis Pipeline
-This script will perform inference, evaluate performance, and generate visualizations. Results will be saved in the results/ directory.
+This script will perform inference, evaluate performance, and generate visualizations. Results will be saved in the results/ directory. Original subset size is 500 reviews, but can be changed with the `--subset_size` argument.
 
 ```bash
-python src/main.py
+python src/main.py --subset_size 10
 ```

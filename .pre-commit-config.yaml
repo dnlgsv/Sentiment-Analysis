@@ -18,7 +18,7 @@ repos:
       - id: pretty-format-json
         args: [--autofix]
       - id: check-added-large-files
-        args: [--maxkb=500]
+        args: [--maxkb=1500]
 
   - repo: https://github.com/psf/black
     rev: 23.9.1

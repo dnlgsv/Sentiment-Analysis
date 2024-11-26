@@ -1,10 +1,4 @@
-"""
-Main Execution Script
----------------------
-This script orchestrates the sentiment analysis pipeline, including dataset preparation,
-model inference, prompt engineering, evaluation, and visualization.
-"""
-
+import argparse
 import logging
 import os
 
@@ -17,32 +11,79 @@ from src.inference import initialize_model
 from src.prompt_engineering import load_prompts
 from src.visualization import plot_confusion_matrix, plot_metrics
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Sentiment Analysis Pipeline",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        default="../data/subset.csv",
+        help="Path to save/load the subset dataset."
+    )
+    parser.add_argument(
+        "--subset_size",
+        type=int,
+        default=500,
+        help="Number of samples to include in the subset."
+    )
+    parser.add_argument(
+        "--model_paths",
+        nargs='+',
+        default=[
+            "models/Qwen2.5-0.5B-Instruct-Q5_K_M.gguf",
+            "models/Qwen2.5-1.5B-Instruct-Q5_K_M.gguf"
+        ],
+        help="List of model file paths to initialize."
+    )
+    parser.add_argument(
+        "--prompts_path",
+        type=str,
+        default="./prompts/prompts.yml",
+        help="Path to the prompts configuration file."
+    )
+    parser.add_argument(
+        "--results_dir",
+        type=str,
+        default="./results",
+        help="Directory to save results."
+    )
+    parser.add_argument(
+        "--log_level",
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Logging level."
+    )
+    return parser.parse_args()
 
 
-def main():
+def setup_logging(log_level):
+    logging.basicConfig(level=log_level.upper(),
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    return logging.getLogger(__name__)
+
+
+def main(args, logger):
     """
     Main function to execute the sentiment analysis pipeline.
     """
     try:
         logger.info("Step 1: Preparing the dataset")
         df_subset = load_and_prepare_dataset(
-            output_path="../data/subset.csv", subset_size=500
+            output_path=args.output_path, subset_size=args.subset_size
         )
 
         logger.info("Step 2: Setting up the models")
-        models = {
-            "Qwen2.5-0.5B": initialize_model(
-                "models/Qwen2.5-0.5B-Instruct-Q5_K_M.gguf"
-            ),
-            "Qwen2.5-1.5B": initialize_model(
-                "models/Qwen2.5-1.5B-Instruct-Q5_K_M.gguf"
-            ),
-        }
+        models = {}
+        for model_path in args.model_paths:
+            model_name = os.path.basename(model_path).split('-')[0]  # Example naming
+            models[model_name] = initialize_model(model_path)
 
         logger.info("Step 3: Loading prompts")
-        prompts = load_prompts("./prompts/prompts.yml")
+        prompts = load_prompts(args.prompts_path)
 
         logger.info("Step 4 & 5: Performing inference with prompt engineering")
         results = []
@@ -58,48 +99,45 @@ def main():
                     sentiment = model.classify_sentiment(
                         system_prompt=system_prompt,
                         prompt=prompt,
-                        max_tokens=prompt_config["max_tokens"],
-                        temperature=prompt_config["temperature"],
-                        top_p=prompt_config["top_p"],
-                        top_k=prompt_config["top_k"],
+                        max_tokens=prompt_config.get("max_tokens", 100),
+                        temperature=prompt_config.get("temperature", 0.7),
+                        top_p=prompt_config.get("top_p", 0.9),
+                        top_k=prompt_config.get("top_k", 50),
                     )
-                    # Despite instructions, models can return strange answers,
-                    # so I will save the predictions in a file for further analysis.
-                    os.makedirs("./results/predictions", exist_ok=True)
+                    # Handle unexpected sentiments
+                    os.makedirs(os.path.join(args.results_dir, "predictions"), exist_ok=True)
                     if sentiment not in ("Positive", "Negative"):
                         with open(
-                            f"./results/predictions/{model_name}_{prompt_name}.txt", "a"
+                            os.path.join(args.results_dir, "predictions", f"{model_name}_{prompt_name}.txt"),
+                            "a"
                         ) as f:
                             f.write(f"Review: {row['review']}\n")
-                            f.write(f"Pred   Sentiment: {sentiment}\n")
+                            f.write(f"Predicted Sentiment: {sentiment}\n")
                             f.write(
                                 f"Actual Sentiment: {'Positive' if row['label'] == 0 else 'Negative'}\n"
                             )
-                            f.write("-" * 50)
-                            f.write("\n")
+                            f.write("-" * 50 + "\n")
 
                     predictions.append(sentiment)
 
                 # Collect results
-                # TODO: If the model predicts a label other than "Positive" or "Negative",
-                # we will keep Negative label. Makes sense to add Unknown label or something similar.
                 unique_predictions = np.unique(predictions)
                 with open(
-                    f"./results/predictions/{model_name}_{prompt_name}_unique_preds.txt",
-                    "w",
+                    os.path.join(args.results_dir, "predictions", f"{model_name}_{prompt_name}_unique_preds.txt"),
+                    "w"
                 ) as f:
                     f.write(f"Unique Predictions: {unique_predictions}\n")
                     f.write(f"Unique Predictions Count: {len(unique_predictions)}\n")
 
+                # Normalize predictions
                 predictions = [
                     "Negative" if label not in ("Positive", "Negative") else label
                     for label in predictions
                 ]
-                # print(f"Predictions: {np.unique(predictions)}")
                 results.append(
                     {
                         "Model": model_name,
-                        "Prompt": prompt_name + "_" + prompt_config["version"],
+                        "Prompt": f"{prompt_name}_{prompt_config.get('version', 'v1')}",
                         "Predictions": predictions,
                     }
                 )
@@ -108,18 +146,20 @@ def main():
         evaluation_results = []
         for result in results:
             metrics = evaluate_predictions(
-                y_true=df_subset["label"].tolist(), y_pred=result["Predictions"]
+                y_true=df_subset["label"].tolist(),
+                y_pred=result["Predictions"]
             )
             metrics.update({"Model": result["Model"], "Prompt": result["Prompt"]})
             evaluation_results.append(metrics)
 
         metrics_df = pd.DataFrame(evaluation_results)
         logger.info(f"Performance metrics:\n{metrics_df}")
-        os.makedirs("./results", exist_ok=True)
-        metrics_df.to_csv("./results/metrics.csv", index=False)
+        os.makedirs(args.results_dir, exist_ok=True)
+        metrics_df.to_csv(os.path.join(args.results_dir, "metrics.csv"), index=False)
 
         logger.info("Step 7: Analyzing results and creating visualizations")
-        plot_metrics(metrics_df, "./results/performance_plots/metrics.png")
+        os.makedirs(os.path.join(args.results_dir, "performance_plots"), exist_ok=True)
+        plot_metrics(metrics_df, os.path.join(args.results_dir, "performance_plots", "metrics.png"))
 
         # Generate confusion matrices
         for result in results:
@@ -128,19 +168,26 @@ def main():
                 y_pred=result["Predictions"],
                 return_confusion_matrix=True,
             )
+            os.makedirs(os.path.join(args.results_dir, "confusion_matrices"), exist_ok=True)
             plot_confusion_matrix(
                 cm=cm["confusion_matrix"],
                 model=result["Model"],
                 prompt=result["Prompt"],
-                save_path=f"./results/confusion_matrices/cm_{result['Model']}_{result['Prompt']}.png",
+                save_path=os.path.join(
+                    args.results_dir,
+                    "confusion_matrices",
+                    f"cm_{result['Model']}_{result['Prompt']}.png"
+                ),
             )
 
         logger.info("Sentiment analysis pipeline completed successfully.")
 
     except Exception as e:
-        logger.error(f"An error occurred in the main pipeline: {e}")
+        logger.error(f"An error occurred in the main pipeline: {e}", exc_info=True)
         raise
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_arguments()
+    logger = setup_logging(args.log_level)
+    main(args, logger)
