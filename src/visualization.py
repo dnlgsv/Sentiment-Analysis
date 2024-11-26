@@ -9,27 +9,89 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def plot_metrics(metrics_df: pd.DataFrame, save_path: str):
+def plot_metrics(
+    metrics_df: pd.DataFrame, save_path: str = "./results/metrics_plot.png"
+):
     """
-    Plots evaluation metrics for different models and prompts.
+    Plots evaluation metrics for different models and prompts, with bars sorted within each metric.
 
     Args:
         metrics_df (pd.DataFrame): DataFrame containing evaluation metrics.
         save_path (str): Path to save the plot image.
     """
     try:
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        metrics_melted = metrics_df.melt(
-            id_vars=["Model", "Prompt"], var_name="Metric", value_name="Value"
+        # Exclude non-numeric or non-plot-friendly columns
+        exclude_columns = ["confusion_matrix"]
+        metrics_df_filtered = metrics_df.drop(columns=exclude_columns, errors="ignore")
+
+        # Combine 'Model' and 'Prompt' into a single identifier
+        metrics_df_filtered["Model_Prompt"] = (
+            metrics_df_filtered["Model"] + "_" + metrics_df_filtered["Prompt"]
         )
 
-        plt.figure(figsize=(10, 6))
-        sns.barplot(x="Metric", y="Value", hue="Model", data=metrics_melted)
-        plt.title("Model Performance Metrics")
-        plt.ylim(0, 1)
-        plt.legend(title="Model")
-        plt.tight_layout()
-        plt.savefig(save_path)
+        # Exclude non-metric columns to get metric columns
+        non_metric_columns = ["Model", "Prompt", "Model_Prompt"]
+        metric_columns = [
+            col for col in metrics_df_filtered.columns if col not in non_metric_columns
+        ]
+
+        # Verify that metric_columns is not empty
+        if not metric_columns:
+            logger.error("No metric columns found for plotting.")
+            return
+
+        # Convert metric columns to numeric, handle errors
+        for col in metric_columns:
+            metrics_df_filtered[col] = pd.to_numeric(
+                metrics_df_filtered[col], errors="coerce"
+            )
+
+        # Drop rows with NaN values in metric columns
+        metrics_df_filtered.dropna(subset=metric_columns, inplace=True)
+
+        # Reshape dataframe for plotting
+        metrics_melted = metrics_df_filtered.melt(
+            id_vars=["Model_Prompt"],
+            value_vars=metric_columns,
+            var_name="Metric",
+            value_name="Value",
+        )
+
+        # Check if metrics_melted is empty
+        if metrics_melted.empty:
+            logger.error("No data to plot. The melted DataFrame is empty.")
+            return
+
+        # Sort the data within each metric
+        metrics_melted["Metric"] = metrics_melted["Metric"].astype(str)
+        sorted_data = metrics_melted.copy()
+        sorted_data["Model_Prompt"] = sorted_data["Model_Prompt"].astype(str)
+
+        # Create a FacetGrid to plot each metric separately
+        g = sns.FacetGrid(sorted_data, col="Metric", sharey=False, height=6, aspect=1)
+
+        # For each subplot, sort the bars within the metric
+        g.map_dataframe(
+            sns.barplot,
+            x="Value",
+            y="Model_Prompt",
+            order=sorted_data.sort_values("Value", ascending=True)["Model_Prompt"],
+            palette="viridis",
+        )
+
+        # Adjust the titles and labels
+        g.set_titles("{col_name}")
+        g.set_axis_labels("Value", "Model_Prompt")
+
+        # Adjust layout
+        plt.subplots_adjust(top=0.9)
+        g.fig.suptitle(
+            "Model Performance Metrics Sorted within Each Metric", fontsize=16
+        )
+
+        # Save the plot
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        plt.savefig(save_path, bbox_inches="tight")
         plt.close()
         logger.info(f"Saved metrics plot to {save_path}")
 
@@ -38,7 +100,9 @@ def plot_metrics(metrics_df: pd.DataFrame, save_path: str):
         raise
 
 
-def plot_confusion_matrix(cm: list, model: str, prompt: str, save_path: str):
+def plot_confusion_matrix(
+    cm: list, model: str, prompt: str, save_path: str = "../results/"
+):
     """
     Plots and saves the confusion matrix.
 

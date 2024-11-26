@@ -23,11 +23,15 @@ def load_prompts(prompt_file: str) -> Dict[str, str]:
 
         prompts = {}
         for key, value in prompts_yaml.get("prompts", {}).items():
-            template = value.get("template")
-            if template:
-                prompts[key] = template
-            else:
-                logger.warning(f"Missing template for prompt '{key}'")
+            prompts[key] = {
+                "version": value.get("version"),
+                "description": value.get("description"),
+                "template": value.get("template"),
+                "temperature": value.get("model_settings", {}).get("temperature"),
+                "top_p": value.get("model_settings", {}).get("top_p"),
+                "top_k": value.get("model_settings", {}).get("top_k"),
+                "max_tokens": value.get("model_settings", {}).get("max_tokens"),
+            }
 
         return prompts
 
