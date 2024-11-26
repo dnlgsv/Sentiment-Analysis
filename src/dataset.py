@@ -7,11 +7,11 @@ from datasets import load_dataset
 
 
 def load_and_prepare_dataset(
-    dataset_name: str,
-    subset_size: int,
-    output_path: str,
-    split: str,
-    random_state: Optional[int],
+    dataset_name: str = "ajaykarthick/imdb-movie-reviews",
+    subset_size: int = 500,
+    output_path: str = "../data/imdb_movie_reviews_subset.csv",
+    split: str = "test",
+    random_state: int = 42,
 ) -> pd.DataFrame:
     """
     Loads the dataset and selects a balanced subset.
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--subset_size",
         type=int,
-        default=1000,
+        default=500,
         help="Total number of samples in the subset (must be even).",
     )
     parser.add_argument(
